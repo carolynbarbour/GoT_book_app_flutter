@@ -9,6 +9,7 @@ class Book with ChangeNotifier {
   var publisher;
   var country;
   var released;
+  var characters;
 
   Book(
       {this.url,
@@ -18,7 +19,8 @@ class Book with ChangeNotifier {
       this.numberOfPages,
       this.publisher,
       this.country,
-      this.released});
+      this.released,
+      this.characters});
 
   factory Book.fromJson(dynamic json) {
     return Book(
@@ -29,6 +31,7 @@ class Book with ChangeNotifier {
         numberOfPages: json['numberOfPages'],
         publisher: json['publisher'],
         country: json['country'],
-        released: json['released']);
+        released: json['released'],
+        characters: json['characters']);
   }
 }

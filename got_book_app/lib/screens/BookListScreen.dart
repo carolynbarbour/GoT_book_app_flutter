@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:got_book_app/screens/BookScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:got_book_app/provider/book_provider.dart';
 
@@ -30,10 +31,15 @@ class _BookListScreenState extends State<BookListScreen> {
 
     var book = bookData.books;
 
-    return SafeArea(
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: _isLoading
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: const Text("Game of Thrones books"),
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+        ),
+        body: SafeArea(
+            child: _isLoading
                 ? Center(
                     child: CircularProgressIndicator(
                         backgroundColor: myContext.primaryColor))
@@ -42,24 +48,29 @@ class _BookListScreenState extends State<BookListScreen> {
                         child: CircularProgressIndicator(
                             backgroundColor: myContext.primaryColor))
                     : Container(
-                        padding: const EdgeInsets.all(32),
+                        padding: const EdgeInsets.all(8.0),
                         child: ListView.builder(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(8.0),
                             itemCount: book.length,
                             itemBuilder: /*1*/ (context, i) {
                               // #docregion listTile
                               return ListTile(
-                                title: Text(book[i].name,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
-                                subtitle: Text(
-                                  "Number of Pages: ${book[i].numberOfPages.toString()}",
-                                  style: TextStyle(
-                                      color: Colors.grey[700],
-                                      fontStyle: FontStyle.italic),
-                                ),
-                              );
+                                  title: Text(book[i].name,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
+                                  subtitle: Text(
+                                    "${book[i].numberOfPages.toString()} pages",
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                  trailing: const Icon(
+                                    Icons.chevron_right_rounded,
+                                    color: Colors.grey,
+                                  ),
+                                  onTap: (() => Navigator.pushNamed(
+                                      context, BookScreen.routeName,
+                                      arguments:
+                                          BookScreenArguments(book[i]))));
                             }))));
   }
 
