@@ -49,9 +49,17 @@ class _BookListScreenState extends State<BookListScreen> {
                             itemBuilder: /*1*/ (context, i) {
                               // #docregion listTile
                               return ListTile(
-                                  title: Text(
-                                book[i].name,
-                              ));
+                                title: Text(book[i].name,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                  "Number of Pages: ${book[i].numberOfPages.toString()}",
+                                  style: TextStyle(
+                                      color: Colors.grey[700],
+                                      fontStyle: FontStyle.italic),
+                                ),
+                              );
                             }))));
   }
 

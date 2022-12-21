@@ -26,7 +26,7 @@ class Book with ChangeNotifier {
         name: json['name'],
         isbn: json['isbn'],
         authors: json['authors'],
-        numberOfPages: json['numbersOfPages'],
+        numberOfPages: json['numberOfPages'],
         publisher: json['publisher'],
         country: json['country'],
         released: json['released']);
