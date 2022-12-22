@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 import 'package:got_book_app/models/book.dart';
+import 'package:provider/provider.dart';
+import 'package:got_book_app/provider/character_provider.dart';
 
 class BookScreenArguments {
   final Book book;
@@ -15,9 +17,13 @@ class BookScreen extends StatefulWidget {
 }
 
 class _BookScreenState extends State<BookScreen> {
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
+
+    _getData();
   }
 
   @override
@@ -30,6 +36,11 @@ class _BookScreenState extends State<BookScreen> {
     final args =
         ModalRoute.of(context)!.settings.arguments as BookScreenArguments;
     var book = args.book;
+
+    final characterData = Provider.of<CharacterProvider>(context);
+    final myContext = Theme.of(context);
+
+    var allCharacters = characterData.characters;
 
     DateTime dateTimeOfRelease = DateTime.parse(book.released);
 
@@ -127,28 +138,45 @@ class _BookScreenState extends State<BookScreen> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Expanded(
-                          child: ListView.builder(
-                              itemCount: characters.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, i) {
-                                return ListTile(
-                                  title: Text(characters[i],
-                                      style:
-                                          const TextStyle(color: Colors.black)),
-                                  trailing: const Icon(
-                                    Icons.chevron_right_rounded,
-                                    color: Colors.grey,
-                                  ),
-                                  // onTap: (() => Navigator.pushNamed(
-                                  //     context, BookScreen.routeName,
-                                  //     arguments:
-                                  //         BookScreenArguments(book[i]))));
-                                );
-                              }))
+                      _isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  backgroundColor: myContext.primaryColor))
+                          : characterData.loading
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                      backgroundColor: myContext.primaryColor))
+                              : Expanded(
+                                  child: ListView.builder(
+                                      itemCount: characters.length,
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, i) {
+                                        return ListTile(
+                                          title: Text(characters[i],
+                                              style: const TextStyle(
+                                                  color: Colors.black)),
+                                          trailing: const Icon(
+                                            Icons.chevron_right_rounded,
+                                            color: Colors.grey,
+                                          ),
+                                          // onTap: (() => Navigator.pushNamed(
+                                          //     context, BookScreen.routeName,
+                                          //     arguments:
+                                          //         BookScreenArguments(book[i]))));
+                                        );
+                                      }))
                     ],
                   )
                 ])))));
+  }
+
+  Future<void> _getData() async {
+    _isLoading = true;
+    final characterData =
+        Provider.of<CharacterProvider>(context, listen: false);
+    characterData.getCharacterData();
+    _isLoading = false;
   }
 }
