@@ -73,11 +73,17 @@ class _BookScreenState extends State<BookScreen> {
                                 padding: EdgeInsets.symmetric(vertical: 4.0),
                                 child: Text("Author(s):",
                                     style: TextStyle(
-                                        color: Colors.grey, fontSize: 16.0)))
+                                        color: Colors.grey, fontSize: 16.0))),
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 4.0),
+                                child: Text("Characters:",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 16.0))),
                           ],
                         ),
                         Column(
                           mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Padding(
@@ -109,6 +115,11 @@ class _BookScreenState extends State<BookScreen> {
                                         .replaceAll('[', '')
                                         .replaceAll(']', ''),
                                     style: const TextStyle(
+                                        color: Colors.grey, fontSize: 16.0))),
+                            const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 4.0),
+                                child: Text("",
+                                    style: TextStyle(
                                         color: Colors.grey, fontSize: 16.0)))
                           ],
                         )
