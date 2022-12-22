@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../models/character.dart';
 
 class Book with ChangeNotifier {
   var url;
@@ -9,7 +10,7 @@ class Book with ChangeNotifier {
   var publisher;
   var country;
   var released;
-  var characters;
+  var characterIds;
 
   Book(
       {this.url,
@@ -20,7 +21,7 @@ class Book with ChangeNotifier {
       this.publisher,
       this.country,
       this.released,
-      this.characters});
+      this.characterIds});
 
   factory Book.fromJson(dynamic json) {
     return Book(
@@ -32,6 +33,15 @@ class Book with ChangeNotifier {
         publisher: json['publisher'],
         country: json['country'],
         released: json['released'],
-        characters: json['characters']);
+        characterIds: getIdsFromUrl(json['characters']));
+  }
+
+  static List<String> getIdsFromUrl(List<dynamic> jsonUrl) {
+    List<String> characterIdsReturned = [];
+    for (var character = 0; character < jsonUrl.length; character++) {
+      var id = Character.getIdFromUrl(jsonUrl[character]);
+      characterIdsReturned.add(id);
+    }
+    return characterIdsReturned;
   }
 }

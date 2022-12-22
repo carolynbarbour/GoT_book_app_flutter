@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class Character with ChangeNotifier {
+  var id;
   var url;
   var name;
   var culture;
@@ -18,6 +19,7 @@ class Character with ChangeNotifier {
   var playedBy;
 
   Character({
+    this.id,
     this.url,
     this.name,
     this.culture,
@@ -37,6 +39,7 @@ class Character with ChangeNotifier {
 
   factory Character.fromJson(dynamic json) {
     return Character(
+      id: getIdFromUrl(json['url']),
       url: json['url'],
       name: json['name'],
       culture: json['culture'],
@@ -53,5 +56,11 @@ class Character with ChangeNotifier {
       tvSeries: json['tvSeries'],
       playedBy: json['playedBy'],
     );
+  }
+
+  static String getIdFromUrl(dynamic jsonUrl) {
+    String url = jsonUrl as String;
+    var splitUrl = url.split("/");
+    return splitUrl.last;
   }
 }

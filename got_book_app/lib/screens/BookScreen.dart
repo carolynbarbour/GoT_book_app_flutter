@@ -1,8 +1,11 @@
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
+import "package:collection/collection.dart";
 import 'package:got_book_app/models/book.dart';
 import 'package:provider/provider.dart';
 import 'package:got_book_app/provider/character_provider.dart';
+
+import '../models/character.dart';
 
 class BookScreenArguments {
   final Book book;
@@ -43,8 +46,6 @@ class _BookScreenState extends State<BookScreen> {
     var allCharacters = characterData.characters;
 
     DateTime dateTimeOfRelease = DateTime.parse(book.released);
-
-    List<String> characters = book.characters.cast<String>();
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -148,13 +149,24 @@ class _BookScreenState extends State<BookScreen> {
                                       backgroundColor: myContext.primaryColor))
                               : Expanded(
                                   child: ListView.builder(
-                                      itemCount: characters.length,
+                                      itemCount: book.characterIds.length,
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       itemBuilder: (context, i) {
+                                        Character? character;
+                                        character =
+                                            allCharacters.firstWhereOrNull(
+                                          (element) =>
+                                              element.id ==
+                                              book.characterIds[i],
+                                        );
+
                                         return ListTile(
-                                          title: Text(characters[i],
+                                          title: Text(
+                                              character != null
+                                                  ? "${character.name}"
+                                                  : "Id because we haven't loaded the character: ${book.characterIds[i]}",
                                               style: const TextStyle(
                                                   color: Colors.black)),
                                           trailing: const Icon(

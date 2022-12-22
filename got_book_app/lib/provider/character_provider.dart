@@ -8,7 +8,8 @@ class CharacterProvider with ChangeNotifier {
   bool loading = false;
   bool isRequestError = false;
   late List<Character> characters = [];
-  Uri url = Uri.parse("https://www.anapioficeandfire.com/api/characters");
+  Uri url =
+      Uri.parse("https://www.anapioficeandfire.com/api/characters?pageSize=50");
 
   getCharacterData() async {
     loading = true;

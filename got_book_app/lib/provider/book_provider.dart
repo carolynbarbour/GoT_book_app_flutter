@@ -8,7 +8,8 @@ class BookProvider with ChangeNotifier {
   bool loading = false;
   bool isRequestError = false;
   late List<Book> books = [];
-  Uri url = Uri.parse("https://www.anapioficeandfire.com/api/books");
+  Uri url =
+      Uri.parse("https://www.anapioficeandfire.com/api/books?pageSize=50");
 
   getBookData() async {
     loading = true;
@@ -24,6 +25,7 @@ class BookProvider with ChangeNotifier {
       loading = false;
       this.isRequestError = true;
       notifyListeners();
+
       rethrow;
     }
   }
