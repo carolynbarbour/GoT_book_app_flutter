@@ -21,12 +21,30 @@ class BookScreen extends StatefulWidget {
 
 class _BookScreenState extends State<BookScreen> {
   bool _isLoading = false;
+  bool _loadedData = false;
+  late Book _book;
 
   @override
   void initState() {
     super.initState();
 
-    _getData();
+    final characterData =
+        Provider.of<CharacterProvider>(context, listen: false);
+
+    characterData.initialise();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    if (!_loadedData) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as BookScreenArguments;
+      _book = args.book;
+      await _getData(_book);
+      _loadedData = true;
+    }
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -36,21 +54,17 @@ class _BookScreenState extends State<BookScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as BookScreenArguments;
-    var book = args.book;
-
     final characterData = Provider.of<CharacterProvider>(context);
     final myContext = Theme.of(context);
 
     var allCharacters = characterData.characters;
 
-    DateTime dateTimeOfRelease = DateTime.parse(book.released);
+    DateTime dateTimeOfRelease = DateTime.parse(_book.released);
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-            title: Text("${book.name}"),
+            title: Text("${_book.name}"),
             backgroundColor: Colors.black,
             foregroundColor: Colors.white),
         body: SafeArea(
@@ -101,13 +115,13 @@ class _BookScreenState extends State<BookScreen> {
                             Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 4.0),
-                                child: Text("${book.numberOfPages}",
+                                child: Text("${_book.numberOfPages}",
                                     style: const TextStyle(
                                         color: Colors.grey, fontSize: 16.0))),
                             Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 4.0),
-                                child: Text("${book.country}",
+                                child: Text("${_book.country}",
                                     style: const TextStyle(
                                         color: Colors.grey, fontSize: 16.0))),
                             Padding(
@@ -122,7 +136,7 @@ class _BookScreenState extends State<BookScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 4.0),
                                 child: Text(
-                                    book.authors
+                                    _book.authors
                                         .toString()
                                         .replaceAll('[', '')
                                         .replaceAll(']', ''),
@@ -149,7 +163,7 @@ class _BookScreenState extends State<BookScreen> {
                                       backgroundColor: myContext.primaryColor))
                               : Expanded(
                                   child: ListView.builder(
-                                      itemCount: book.characterIds.length,
+                                      itemCount: _book.characterIds.length,
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -158,15 +172,15 @@ class _BookScreenState extends State<BookScreen> {
                                         character =
                                             allCharacters.firstWhereOrNull(
                                           (element) =>
-                                              element.id ==
-                                              book.characterIds[i],
+                                              element?.id ==
+                                              _book.characterIds[i],
                                         );
 
                                         return ListTile(
                                           title: Text(
                                               character != null
                                                   ? "${character.name}"
-                                                  : "Id because we haven't loaded the character: ${book.characterIds[i]}",
+                                                  : "Id because we haven't loaded the character: ${_book.characterIds[i]}",
                                               style: const TextStyle(
                                                   color: Colors.black)),
                                           trailing: const Icon(
@@ -184,11 +198,11 @@ class _BookScreenState extends State<BookScreen> {
                 ])))));
   }
 
-  Future<void> _getData() async {
+  Future<void> _getData(Book book) async {
     _isLoading = true;
     final characterData =
         Provider.of<CharacterProvider>(context, listen: false);
-    characterData.getCharacterData();
+    characterData.getCharacterData(book.characterIds);
     _isLoading = false;
   }
 }

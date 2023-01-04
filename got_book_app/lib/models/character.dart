@@ -1,26 +1,30 @@
 import 'package:flutter/cupertino.dart';
+import 'package:isar/isar.dart';
 
+part 'character.g.dart';
+
+@collection
 class Character with ChangeNotifier {
-  var id;
-  var url;
-  var name;
-  var culture;
-  var born;
-  var died;
-  var titles;
-  var aliases;
-  var father;
-  var mother;
-  var spouse;
-  var allegiances;
-  var books;
-  var povBooks;
-  var tvSeries;
-  var playedBy;
+  Id id;
+  String url;
+  String? name;
+  String? culture;
+  String? born;
+  String? died;
+  List<String>? titles;
+  List<String>? aliases;
+  String? father;
+  String? mother;
+  String? spouse;
+  List<String>? allegiances;
+  List<String>? books;
+  List<String>? povBooks;
+  List<String>? tvSeries;
+  List<String>? playedBy;
 
   Character({
-    this.id,
-    this.url,
+    required this.id,
+    required this.url,
     this.name,
     this.culture,
     this.born,
@@ -45,22 +49,23 @@ class Character with ChangeNotifier {
       culture: json['culture'],
       born: json['born'],
       died: json['died'],
-      titles: json['titles'],
-      aliases: json['aliases'],
+      titles: [...json['titles']],
+      aliases: [...json['aliases']],
       father: json['father'],
       mother: json['mother'],
       spouse: json['spouse'],
-      allegiances: json['allegiances'],
-      books: json['books'],
-      povBooks: json['povBooks'],
-      tvSeries: json['tvSeries'],
-      playedBy: json['playedBy'],
+      allegiances: [...json['allegiances']],
+      books: [...json['books']],
+      povBooks: [...json['povBooks']],
+      tvSeries: [...json['tvSeries']],
+      playedBy: [...json['playedBy']],
     );
   }
 
-  static String getIdFromUrl(dynamic jsonUrl) {
+  static int getIdFromUrl(dynamic jsonUrl) {
     String url = jsonUrl as String;
     var splitUrl = url.split("/");
-    return splitUrl.last;
+    int id = int.parse(splitUrl.last);
+    return id;
   }
 }

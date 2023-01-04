@@ -36,8 +36,8 @@ class Book with ChangeNotifier {
         characterIds: getIdsFromUrl(json['characters']));
   }
 
-  static List<String> getIdsFromUrl(List<dynamic> jsonUrl) {
-    List<String> characterIdsReturned = [];
+  static List<int> getIdsFromUrl(List<dynamic> jsonUrl) {
+    List<int> characterIdsReturned = [];
     for (var character = 0; character < jsonUrl.length; character++) {
       var id = Character.getIdFromUrl(jsonUrl[character]);
       characterIdsReturned.add(id);
