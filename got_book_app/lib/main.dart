@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:got_book_app/screens/BookScreen.dart';
 import 'package:got_book_app/screens/BookListScreen.dart';
+import 'package:got_book_app/screens/CharacterScreen.dart';
 import 'package:got_book_app/provider/book_provider.dart';
 
 void main() {
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
                   backgroundColor: Colors.white, foregroundColor: Colors.black),
             ),
             home: BookListScreen(),
-            routes: {BookScreen.routeName: (context) => BookScreen()}));
+            routes: {
+              BookScreen.routeName: (context) => BookScreen(),
+              CharacterScreen.routeName: (context) => CharacterScreen()
+            }));
   }
 }

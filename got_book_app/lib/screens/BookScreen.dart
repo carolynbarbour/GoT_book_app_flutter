@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:got_book_app/screens/CharacterScreen.dart';
 import "package:intl/intl.dart";
 import "package:collection/collection.dart";
 import 'package:got_book_app/models/book.dart';
@@ -187,10 +188,13 @@ class _BookScreenState extends State<BookScreen> {
                                             Icons.chevron_right_rounded,
                                             color: Colors.grey,
                                           ),
-                                          // onTap: (() => Navigator.pushNamed(
-                                          //     context, BookScreen.routeName,
-                                          //     arguments:
-                                          //         BookScreenArguments(book[i]))));
+                                          onTap: (() => Navigator.pushNamed(
+                                              context,
+                                              CharacterScreen.routeName,
+                                              arguments:
+                                                  CharacterScreenArguments(
+                                                      character))),
+                                          enabled: character != null,
                                         );
                                       }))
                     ],

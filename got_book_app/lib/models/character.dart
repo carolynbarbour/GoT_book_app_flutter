@@ -22,6 +22,8 @@ class Character with ChangeNotifier {
   List<String>? tvSeries;
   List<String>? playedBy;
 
+  late List<Attribute> attributes;
+
   Character({
     required this.id,
     required this.url,
@@ -39,7 +41,24 @@ class Character with ChangeNotifier {
     this.povBooks,
     this.tvSeries,
     this.playedBy,
-  });
+  }) {
+    attributes = [
+      Attribute(key: 'Name', value: name),
+      Attribute(key: 'Culture', value: culture),
+      Attribute(key: 'Born', value: born),
+      Attribute(key: 'Died', value: died),
+      Attribute(key: 'Father', value: father),
+      Attribute(key: 'Mother', value: mother),
+      Attribute(key: 'Spouse', value: spouse),
+      Attribute(key: 'Titles', value: titles),
+      Attribute(key: 'Aliases', value: aliases),
+      Attribute(key: 'Allegiances', value: allegiances),
+      Attribute(key: 'Books', value: books),
+      Attribute(key: 'PoV Books', value: povBooks),
+      Attribute(key: 'TV Series', value: tvSeries),
+      Attribute(key: 'Played By', value: playedBy),
+    ];
+  }
 
   factory Character.fromJson(dynamic json) {
     return Character(
@@ -68,4 +87,11 @@ class Character with ChangeNotifier {
     int id = int.parse(splitUrl.last);
     return id;
   }
+}
+
+class Attribute {
+  String key;
+  dynamic value;
+
+  Attribute({required this.key, required this.value});
 }
