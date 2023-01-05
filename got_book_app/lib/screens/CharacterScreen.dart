@@ -43,33 +43,29 @@ class _CharacterScreenState extends State<CharacterScreen> {
         body: SafeArea(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Expanded(
-                    child: ListView.builder(
-                        itemCount: _character?.attributes.length ?? 0,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, i) {
-                          var attribute = _character?.attributes[i];
-                          String attributeValue = "";
-                          if (attribute?.value is List<String>) {
-                            var valueList = attribute?.value as List<String>;
-                            for (int i = 0; i < valueList.length; i++) {
-                              if (i != valueList.length - 1) // last one
-                              {
-                                attributeValue += "${valueList[i]}, ";
-                              } else {
-                                attributeValue += valueList[i];
-                              }
-                            }
+                child: ListView.builder(
+                    itemCount: _character?.attributes.length ?? 0,
+                    itemBuilder: (context, i) {
+                      var attribute = _character?.attributes[i];
+                      String attributeValue = "";
+                      if (attribute?.value is List<String>) {
+                        var valueList = attribute?.value as List<String>;
+                        for (int i = 0; i < valueList.length; i++) {
+                          if (i != valueList.length - 1) // last one
+                          {
+                            attributeValue += "${valueList[i]}, ";
+                          } else {
+                            attributeValue += valueList[i];
                           }
+                        }
+                      }
 
-                          return GFListTile(
-                            title: Text(
-                                attribute?.key ?? "Unknown attribute key",
-                                style: const TextStyle(color: Colors.black)),
-                            subTitle: Text(attributeValue,
-                                style: const TextStyle(color: Colors.black)),
-                          );
-                        })))));
+                      return GFListTile(
+                        title: Text(attribute?.key ?? "Unknown attribute key",
+                            style: const TextStyle(color: Colors.black)),
+                        subTitle: Text(attributeValue,
+                            style: const TextStyle(color: Colors.black)),
+                      );
+                    }))));
   }
 }
