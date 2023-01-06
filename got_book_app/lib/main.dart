@@ -34,13 +34,13 @@ class MyApp extends StatelessWidget {
                       ]),
                       title: const Text('Game Of Thrones'),
                     ),
-                    body: TabBarView(children: [
+                    body: const TabBarView(children: [
                       BookListScreen(),
                       CharacterListScreen(),
                     ]))),
             routes: {
-              BookScreen.routeName: (context) => BookScreen(),
-              CharacterScreen.routeName: (context) => CharacterScreen()
+              BookScreen.routeName: (context) => const BookScreen(),
+              CharacterScreen.routeName: (context) => const CharacterScreen()
             }));
   }
 }

@@ -16,6 +16,8 @@ class BookScreenArguments {
 class BookScreen extends StatefulWidget {
   static const routeName = "/bookScreen";
 
+  const BookScreen({super.key});
+
   @override
   _BookScreenState createState() => _BookScreenState();
 }

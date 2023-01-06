@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 
 import '../models/character.dart';
@@ -9,7 +10,9 @@ class CharacterRepository {
     try {
       final isar = Isar.openSync([CharacterSchema]);
       _isar = isar;
-    } catch (error) {}
+    } catch (error) {
+      debugPrint("Isar was already open");
+    }
   }
 
   Future<List<Character?>> getAllCharacters(List<int> ids) async {

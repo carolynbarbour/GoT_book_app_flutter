@@ -23,7 +23,7 @@ class BookProvider with ChangeNotifier {
       notifyListeners();
     } catch (error) {
       loading = false;
-      this.isRequestError = true;
+      isRequestError = true;
       notifyListeners();
 
       rethrow;

@@ -1,10 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:getwidget/getwidget.dart';
-import "package:intl/intl.dart";
-import "package:collection/collection.dart";
-import 'package:got_book_app/models/book.dart';
-import 'package:provider/provider.dart';
-import 'package:got_book_app/provider/character_provider.dart';
 
 import '../models/character.dart';
 
@@ -16,13 +11,13 @@ class CharacterScreenArguments {
 class CharacterScreen extends StatefulWidget {
   static const routeName = "/characterScreen";
 
+  const CharacterScreen({super.key});
+
   @override
   _CharacterScreenState createState() => _CharacterScreenState();
 }
 
 class _CharacterScreenState extends State<CharacterScreen> {
-  bool _isLoading = false;
-  bool _loadedData = false;
   late Character? _character;
 
   @override
@@ -30,7 +25,6 @@ class _CharacterScreenState extends State<CharacterScreen> {
     final args =
         ModalRoute.of(context)!.settings.arguments as CharacterScreenArguments;
     _character = args.character;
-    final myContext = Theme.of(context);
 
     var filledAttributes = _character?.filledAttributes();
 
