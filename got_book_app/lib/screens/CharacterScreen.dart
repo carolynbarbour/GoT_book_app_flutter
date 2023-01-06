@@ -32,6 +32,8 @@ class _CharacterScreenState extends State<CharacterScreen> {
     _character = args.character;
     final myContext = Theme.of(context);
 
+    var filledAttributes = _character?.filledAttributes();
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -44,9 +46,9 @@ class _CharacterScreenState extends State<CharacterScreen> {
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ListView.builder(
-                    itemCount: _character?.attributes.length ?? 0,
+                    itemCount: filledAttributes?.length ?? 0,
                     itemBuilder: (context, i) {
-                      var attribute = _character?.attributes[i];
+                      var attribute = filledAttributes?[i];
                       String attributeValue = "";
                       if (attribute?.value is List<String>) {
                         var valueList = attribute?.value as List<String>;
@@ -58,6 +60,8 @@ class _CharacterScreenState extends State<CharacterScreen> {
                             attributeValue += valueList[i];
                           }
                         }
+                      } else {
+                        attributeValue = attribute?.value ?? "";
                       }
 
                       return GFListTile(

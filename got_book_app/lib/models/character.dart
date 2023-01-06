@@ -43,7 +43,6 @@ class Character with ChangeNotifier {
     this.playedBy,
   }) {
     attributes = [
-      Attribute(key: 'Name', value: name),
       Attribute(key: 'Culture', value: culture),
       Attribute(key: 'Born', value: born),
       Attribute(key: 'Died', value: died),
@@ -86,6 +85,24 @@ class Character with ChangeNotifier {
     var splitUrl = url.split("/");
     int id = int.parse(splitUrl.last);
     return id;
+  }
+
+  List<Attribute> filledAttributes() {
+    List<Attribute> filled = <Attribute>[];
+
+    for (int i = 0; i < attributes.length; i++) {
+      var attribute = attributes[i];
+      if (attribute.value != null && !attribute.value.isEmpty) {
+        if (attribute.value is List<String> &&
+            attribute.value.length == 1 &&
+            attribute.value[0].isEmpty) {
+          break;
+        }
+        filled.add(attribute);
+      }
+    }
+
+    return filled;
   }
 }
 
