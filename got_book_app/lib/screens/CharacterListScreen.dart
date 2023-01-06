@@ -15,6 +15,7 @@ class CharacterListScreen extends StatefulWidget {
 class _CharacterListScreenState extends State<CharacterListScreen> {
   bool _isLoading = false;
   bool _loadedData = false;
+  List<int> _characterIdsDisplayedSoFar = [];
 
   @override
   void initState() {
@@ -71,15 +72,30 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: ListView.builder(
                             padding: const EdgeInsets.all(8.0),
-                            itemCount: characters.length,
+                            itemCount: characters.length + 1,
                             itemBuilder: /*1*/ (context, i) {
+                              if (i >= characters.length) {
+                                return ListTile(
+                                  title: const Text("Load more",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle: FontStyle.italic)),
+                                  onTap: () => _getData(
+                                      lastCharacterId:
+                                          characters[characters.length - 1]
+                                                  ?.id ??
+                                              characters.length),
+                                );
+                              }
                               var character = characters[i];
+
                               // #docregion listTile
                               return ListTile(
                                   title: Text(character?.name ?? "Unknown name",
                                       style: const TextStyle(
                                           color: Colors.black,
-                                          fontWeight: FontWeight.bold)),
+                                          fontWeight: FontWeight.w500)),
                                   trailing: const Icon(
                                     Icons.chevron_right_rounded,
                                     color: Colors.grey,
@@ -92,11 +108,15 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
                             }))));
   }
 
-  Future<void> _getData() async {
+  Future<void> _getData({int lastCharacterId = 1}) async {
     _isLoading = true;
     final characterData =
         Provider.of<CharacterProvider>(context, listen: false);
-    characterData.getCharacterData(List<int>.generate(25, (i) => i + 1));
+    var newListOfIdsToLoad =
+        List<int>.generate(25, (i) => i + lastCharacterId + 1);
+    _characterIdsDisplayedSoFar += newListOfIdsToLoad;
+    _characterIdsDisplayedSoFar = _characterIdsDisplayedSoFar.toSet().toList();
+    characterData.getCharacterData(_characterIdsDisplayedSoFar);
     _isLoading = false;
   }
 }
