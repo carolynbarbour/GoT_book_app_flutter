@@ -55,7 +55,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                         for (int i = 0; i < valueList.length; i++) {
                           if (i != valueList.length - 1) // last one
                           {
-                            attributeValue += "${valueList[i]}, ";
+                            attributeValue += "${valueList[i]},\n";
                           } else {
                             attributeValue += valueList[i];
                           }
@@ -66,9 +66,11 @@ class _CharacterScreenState extends State<CharacterScreen> {
 
                       return GFListTile(
                         title: Text(attribute?.key ?? "Unknown attribute key",
-                            style: const TextStyle(color: Colors.black)),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500)),
                         subTitle: Text(attributeValue,
-                            style: const TextStyle(color: Colors.black)),
+                            style: const TextStyle(color: Colors.grey)),
                       );
                     }))));
   }

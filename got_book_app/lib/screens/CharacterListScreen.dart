@@ -1,24 +1,39 @@
 import "package:flutter/material.dart";
-import 'package:got_book_app/screens/BookScreen.dart';
+import 'package:got_book_app/screens/CharacterScreen.dart';
 import 'package:provider/provider.dart';
-import 'package:got_book_app/provider/book_provider.dart';
+import 'package:got_book_app/provider/character_provider.dart';
 
-class BookListScreen extends StatefulWidget {
-  static const routeName = "/bookListScreen";
+class CharacterListScreen extends StatefulWidget {
+  static const routeName = "/characterListScreen";
 
-  const BookListScreen({super.key});
+  const CharacterListScreen({super.key});
 
   @override
-  _BookListScreenState createState() => _BookListScreenState();
+  _CharacterListScreenState createState() => _CharacterListScreenState();
 }
 
-class _BookListScreenState extends State<BookListScreen> {
+class _CharacterListScreenState extends State<CharacterListScreen> {
   bool _isLoading = false;
+  bool _loadedData = false;
 
   @override
   void initState() {
     super.initState();
-    _getData();
+
+    final characterData =
+        Provider.of<CharacterProvider>(context, listen: false);
+
+    characterData.initialise();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    if (!_loadedData) {
+      await _getData();
+      _loadedData = true;
+    }
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -28,15 +43,15 @@ class _BookListScreenState extends State<BookListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bookData = Provider.of<BookProvider>(context);
+    final characterData = Provider.of<CharacterProvider>(context);
     final myContext = Theme.of(context);
 
-    var book = bookData.books;
+    var characters = characterData.characters;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text("Books"),
+          title: const Text("Characters"),
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
         ),
@@ -45,7 +60,7 @@ class _BookListScreenState extends State<BookListScreen> {
                 ? Center(
                     child: CircularProgressIndicator(
                         backgroundColor: myContext.primaryColor))
-                : bookData.loading
+                : characterData.loading
                     ? Center(
                         child: CircularProgressIndicator(
                             backgroundColor: myContext.primaryColor))
@@ -53,33 +68,32 @@ class _BookListScreenState extends State<BookListScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: ListView.builder(
                             padding: const EdgeInsets.all(8.0),
-                            itemCount: book.length,
+                            itemCount: characters.length,
                             itemBuilder: /*1*/ (context, i) {
+                              var character = characters[i];
                               // #docregion listTile
                               return ListTile(
-                                  title: Text(book[i].name,
+                                  title: Text(character?.name ?? "Unknown name",
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),
-                                  subtitle: Text(
-                                    "${book[i].numberOfPages.toString()} pages",
-                                    style: const TextStyle(color: Colors.grey),
-                                  ),
                                   trailing: const Icon(
                                     Icons.chevron_right_rounded,
                                     color: Colors.grey,
                                   ),
                                   onTap: (() => Navigator.pushNamed(
-                                      context, BookScreen.routeName,
+                                      context, CharacterScreen.routeName,
                                       arguments:
-                                          BookScreenArguments(book[i]))));
+                                          CharacterScreenArguments(character))),
+                                  enabled: character != null);
                             }))));
   }
 
   Future<void> _getData() async {
     _isLoading = true;
-    final bookData = Provider.of<BookProvider>(context, listen: false);
-    bookData.getBookData();
+    final characterData =
+        Provider.of<CharacterProvider>(context, listen: false);
+    characterData.getCharacterData(List<int>.generate(25, (i) => i + 1));
     _isLoading = false;
   }
 }
