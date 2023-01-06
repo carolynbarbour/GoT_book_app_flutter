@@ -22,6 +22,7 @@ class Character with ChangeNotifier {
   List<String>? tvSeries;
   List<String>? playedBy;
 
+  @ignore
   late List<Attribute> attributes;
 
   Character({
