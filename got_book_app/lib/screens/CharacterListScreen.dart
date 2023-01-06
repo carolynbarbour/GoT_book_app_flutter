@@ -46,7 +46,10 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
     final characterData = Provider.of<CharacterProvider>(context);
     final myContext = Theme.of(context);
 
-    var characters = characterData.characters;
+    var characters = characterData.characters
+        .where((element) =>
+            element?.name != null && element?.name?.isNotEmpty == true)
+        .toList();
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
